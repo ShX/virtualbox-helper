@@ -1,5 +1,7 @@
 #!/bin/bash
 
+alias echo="echo -e"
+
 usages() {
 	FILE=`basename $0`
 	echo "usage: $FILE list       - show VMs names"
@@ -9,7 +11,7 @@ usages() {
 }
 
 list() {
-	echo `VBoxManage list vms | awk -F\" '{print $2}'`
+	VBoxManage list vms | awk -F\" '{print $2}'
 }
 
 exist() {
@@ -33,7 +35,7 @@ state)
 	elif [ $(exist $2) -ne 1 ] ; then
 		echo >&2 VM $2 not exists
 		exit
-	elif [ $(state $2) -eq 0 ] ; then
+	elif [ $(state $2) -ne 0 ] ; then
 		echo VM $2 running
 	else
 		echo VM $2 power off
